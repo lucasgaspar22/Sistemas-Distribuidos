@@ -1,4 +1,4 @@
-# Sistemas-Distribuidos
+# Sistemas Distribuidos
 
 Projeto criado em sala de aula com o intuíto de aprender o básico de uma integração de um back-end com um front-end
 
