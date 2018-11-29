@@ -20,7 +20,7 @@ server.post('/toddy/inserir', (req,res,next)=>{
     };
     // Monta a query de inserção
     let Query = `INSERT INTO toddy (lote, conteudo, validade) 
-                VALUES ('${tody.lote}' , '${toddy.conteudo}' , '${toddy.validade}');`
+                VALUES ('${toddy.lote}' , '${toddy.conteudo}' , '${toddy.validade}');`
 
     //Excuta a query e retorna a response
     db(Query,res);
@@ -29,17 +29,18 @@ server.post('/toddy/inserir', (req,res,next)=>{
 
 server.post('/toddy/atualizar/:id',(req,res,next)=>{
     // Cria um objeto com a body da request
+    let toddy_id= parseInt(req.params.id);
     let toddy = {
-        id: parseInt(req.body.id),
+        id: toddy_id,
         lote: req.body.lote,
         conteudo: req.body.conteudo,
         validade: req.body.validade
     };
     // Monta a query
     let Query = `UPDATE toddy SET 
-                lote = '${toddy.lote}', conteudo = '${toddy.conteudo}', validade = '${toddy.validade}', 
-                WHERE id = ${toddy.id};`;
-    
+     lote = '${toddy.lote}', conteudo = '${toddy.conteudo}', validade = '${toddy.validade}'
+     WHERE id = ${toddy.id};`;
+   
     //Excuta a query e retorna a response
     db(Query,res);
     next();
@@ -81,7 +82,7 @@ server.get('/toddy/buscarLotes',(req,res,next)=>{
 server.get('/toddy/buscarPorLote/:lote', (req,res,next)=>{
     let lote = req.params.lote; // Recupera o Lote passado
     // Query que sera executada no DB
-    let Query = `SELECT id, lote, conteudo, validade FROM toddy WHERE lote = ${lote};`;
+    let Query = `SELECT id, lote, conteudo, validade FROM toddy WHERE lote LIKE '${lote}';`;
     //Excuta a query e retorna a response
     db(Query,res);
     next();
