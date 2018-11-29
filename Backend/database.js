@@ -2,15 +2,18 @@ const mysql = require("mysql");
 
 function executeQuery(query,res){
     var connection = mysql.createConnection({
-        host     : 'localhost',
+        host     : 'Localhost',
         user     : 'root',
-        password : 'root',
-        database : 'ec021'
+        password : '',
+        database : 'toddy'
     });
     connection.connect();
     connection.query(query,(error, results, fields) => {
-        if (error) throw error;
-        res.json(results)
+        if (error){
+            res.send("ERRO!!!!")
+            throw error;
+        } 
+        else res.json(results)
     });
     connection.end()
 }
