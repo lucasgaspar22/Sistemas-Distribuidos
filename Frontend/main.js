@@ -6,6 +6,7 @@ $(document).ready(()=>{
     $("#buscarVencidos").click(buscarVencidos);
     $("#buscarTodos").click(buscarTodos);
     $("#inserir").click(inserir);
+    $("#atualizar").click(atualizar)
 });
 
 function buscarPorId(){
