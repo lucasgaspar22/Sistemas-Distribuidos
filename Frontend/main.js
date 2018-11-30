@@ -6,7 +6,10 @@ $(document).ready(()=>{
     $("#buscarVencidos").click(buscarVencidos);
     $("#buscarTodos").click(buscarTodos);
     $("#inserir").click(inserir);
-    $("#atualizar").click(atualizar)
+    $("#atualizar").click(atualizar);
+    $("#buscaTodosExcluir").click(buscaTodosExcluir);
+    $(".remove").click(excluir);
+
 });
 
 function buscarPorId(){
@@ -194,6 +197,50 @@ function atualizar(){
         },
         error: function(){
             alert("Ocorreu um erro");
+        }
+    });
+}
+
+function buscaTodosExcluir(){
+    let url_get = "http://localhost:5000/";
+    $.ajax({
+        url: url_get,
+        type:'GET',
+        success: function(){
+            $("#tabela_excuir_todos > tbody").empty();
+            $.each(result, function (indice, toddy){
+                let date = new Date(toddy.validade);
+                let date_string = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear}`;
+                $("#tabela_excuir_todos> tbody").append(
+                    `<tr>`+
+                    `<td>`+toddy.id+`</td>`+
+                    `<td>`+toddy.lote+`</td>`+
+                    `<td>`+toddy.conteudo+`</td>`+
+                    `<td>`+date_string+`</td>`+
+                    `<td><i id="remove" class="fa fa-trash remove"  style="color:red"></i></td>`+
+                    `</tr>`
+                );
+            });
+        },
+        error: function(){
+            alert("Ocorreu um erro!");
+        }
+    });
+}
+function excluir(){
+    let id = $(this).closest('tr').find("td:eq(1)").text();
+    let url_post = `http://localhost:5000/toddy/excluir/${id}`;
+    $.ajax({
+        url: url_post,
+        type: 'POST',
+        dataType:'json',
+        data:{},
+        success: function (result, status, xhr){
+            $(this).closest('tr').remove();
+            alert("Removido com sucesso;")
+        },
+        error: function(){
+            alert("Ocorreu um erro!");
         }
     });
 }
