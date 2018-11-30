@@ -1,8 +1,8 @@
 let restify = require("restify"); // Importa Restify
 const cors = require ("./cors"); // Importa configurações de CORS
 const db = require ("./database"); // Importa configurações do Banco de Dados
-
-
+const os = require ("os");
+const md5 = require('md5')
 
 
 let server = restify.createServer({ name: "Server" }); // Cria o servidor
@@ -10,7 +10,16 @@ server.use(restify.plugins.queryParser()); // Permite que GET passe query params
 server.use(restify.plugins.bodyParser()); // Converte o Body da request em JSON
 server.use(cors); // Define as configurações de CORS
   
-
+server.get('/:token',(req,res,next)=>{
+    let token = req.params.token;
+    console.log(token)
+    if( token === md5(os.homedir())){
+        res.send(200);
+    }
+    else{
+        res.send(400);
+    }
+})
 server.post('/toddy/inserir', (req,res,next)=>{
     // Cria um objeto com a body da request
     let toddy = {

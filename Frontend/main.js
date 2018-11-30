@@ -6,7 +6,25 @@ $(document).ready(()=>{
     $("#buscarVencidos").click(buscarVencidos);
     $("#buscarTodos").click(buscarTodos);
     $("#inserir").click(inserir);
-    $("#atualizar").click(atualizar)
+    $("#atualizar").click(atualizar);
+    $("#buscaTodosExcluir").click(buscaTodosExcluir);
+
+    $('#myModal').modal('toggle');
+    $('#myModal').modal('show');
+    $('#token_button').click(()=>{
+        let token = $("#token_id").val();
+        $.ajax({
+            url:`http://localhost:5000/${token}`,
+            type: 'GET',
+            success:function(result, status, xhr){
+                $('#myModal').modal('toggle');
+                $('#myModal').modal('hide');
+            },
+            error:function(result,status){
+                window.location.href = 'out.html';
+            }
+        });
+    })
 });
 
 function buscarPorId(){
@@ -124,15 +142,15 @@ function buscarVencidos(){
 }
 
 function buscarTodos(){
-    let url_get = "http://localhost:5000/";
+    let url_get = "http://localhost:5000/toddy/listar";
     $.ajax({
         url: url_get,
         type:'GET',
-        success: function(){
+        success: function(result, status, xhr){
             $("#tabela_busca_todos > tbody").empty();
             $.each(result, function (indice, toddy){
                 let date = new Date(toddy.validade);
-                let date_string = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear}`;
+                let date_string = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`;
                 $("#tabela_busca_todos> tbody").append(
                     `<tr>`+
                     `<td>`+toddy.id+`</td>`+
@@ -178,7 +196,7 @@ function atualizar(){
     let lote_toddy = $("#lote_atualizar").val();
     let conteudo_toddy = $("#conteudo_atualizar").val();
     let validade_toddy = $("#validade_atualizar").val();
-    let url_post = `http://localhost:5000/toddy/atualizar/${id}`;
+    let url_post = `http://localhost:5000/toddy/atualizar/${id_toddy}`;
     $.ajax({
         url:  url_post,
         type:'POST',
@@ -190,10 +208,58 @@ function atualizar(){
         },
         success: function(){
             alert("Atualizado com Sucesso!");
-            buscarLotes();
         },
         error: function(){
             alert("Ocorreu um erro");
+        }
+    });
+}
+
+function buscaTodosExcluir(){
+    let url_get = "http://localhost:5000/toddy/listar";
+    $.ajax({
+        url: url_get,
+        type:'GET',
+        success: function(result, status, xhr){
+            $("#tabela_excuir_todos > tbody").empty();
+            $.each(result, function (indice, toddy){
+                let date = new Date(toddy.validade);
+                let date_string = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`;
+                $("#tabela_excuir_todos> tbody").append(
+                    `<tr>`+
+                    `<td>`+toddy.id+`</td>`+
+                    `<td>`+toddy.lote+`</td>`+
+                    `<td>`+toddy.conteudo+`</td>`+
+                    `<td>`+date_string+`</td>`+
+                    `<td><button  class="btn btn-dark remove"><i  class="fa fa-trash"  style="color:red"></i> Excuir</button></td>`+
+                    `</tr>`
+                );
+                $(".remove").click(deletar);
+
+            });
+        },
+        error: function(){
+            alert("Ocorreu um erro!");
+        }
+    });
+}
+function deletar(){
+    let id = $(this).closest('tr').find("td:eq(0)").text();
+    $(this).closest('tr').remove();
+    let url_post = `http://localhost:5000/toddy/excluir/${id}`;
+    console.log(url_post)
+    $.ajax({
+        url: url_post,
+        type: 'POST',
+        dataType:'json',
+        data:{},
+        success: function (result, status, xhr){
+           
+            alert("Removido com sucesso;")
+
+        },
+        error: function(){
+            alert("Ocorreu um erro!");
         }
     });
 }
