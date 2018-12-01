@@ -216,6 +216,7 @@ function atualizar(){
 }
 
 function buscaTodosExcluir(){
+<<<<<<< HEAD
     let url_get = "http://localhost:5000/toddy/listar";
     $.ajax({
         url: url_get,
@@ -225,17 +226,34 @@ function buscaTodosExcluir(){
             $.each(result, function (indice, toddy){
                 let date = new Date(toddy.validade);
                 let date_string = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`;
+=======
+    let url_get = "http://localhost:5000/";
+    $.ajax({
+        url: url_get,
+        type:'GET',
+        success: function(){
+            $("#tabela_excuir_todos > tbody").empty();
+            $.each(result, function (indice, toddy){
+                let date = new Date(toddy.validade);
+                let date_string = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear}`;
+>>>>>>> b08391124256773784abf6571f89ddfe352369be
                 $("#tabela_excuir_todos> tbody").append(
                     `<tr>`+
                     `<td>`+toddy.id+`</td>`+
                     `<td>`+toddy.lote+`</td>`+
                     `<td>`+toddy.conteudo+`</td>`+
                     `<td>`+date_string+`</td>`+
+<<<<<<< HEAD
                     `<td><button  class="btn btn-dark remove"><i  class="fa fa-trash"  style="color:red"></i> Excuir</button></td>`+
                     `</tr>`
                 );
                 $(".remove").click(deletar);
 
+=======
+                    `<td><i id="remove" class="fa fa-trash remove"  style="color:red"></i></td>`+
+                    `</tr>`
+                );
+>>>>>>> b08391124256773784abf6571f89ddfe352369be
             });
         },
         error: function(){
@@ -243,20 +261,31 @@ function buscaTodosExcluir(){
         }
     });
 }
+<<<<<<< HEAD
 function deletar(){
     let id = $(this).closest('tr').find("td:eq(0)").text();
     $(this).closest('tr').remove();
     let url_post = `http://localhost:5000/toddy/excluir/${id}`;
     console.log(url_post)
+=======
+function excluir(){
+    let id = $(this).closest('tr').find("td:eq(1)").text();
+    let url_post = `http://localhost:5000/toddy/excluir/${id}`;
+>>>>>>> b08391124256773784abf6571f89ddfe352369be
     $.ajax({
         url: url_post,
         type: 'POST',
         dataType:'json',
         data:{},
         success: function (result, status, xhr){
+<<<<<<< HEAD
            
             alert("Removido com sucesso;")
 
+=======
+            $(this).closest('tr').remove();
+            alert("Removido com sucesso;")
+>>>>>>> b08391124256773784abf6571f89ddfe352369be
         },
         error: function(){
             alert("Ocorreu um erro!");
