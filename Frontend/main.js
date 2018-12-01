@@ -220,11 +220,13 @@ function buscaTodosExcluir(){
     $.ajax({
         url: url_get,
         type:'GET',
-        success: function(result, status, xhr){
+        success: function(){
             $("#tabela_excuir_todos > tbody").empty();
             $.each(result, function (indice, toddy){
                 let date = new Date(toddy.validade);
+
                 let date_string = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`;
+
                 $("#tabela_excuir_todos> tbody").append(
                     `<tr>`+
                     `<td>`+toddy.id+`</td>`+
@@ -243,18 +245,18 @@ function buscaTodosExcluir(){
         }
     });
 }
+
 function deletar(){
     let id = $(this).closest('tr').find("td:eq(0)").text();
     $(this).closest('tr').remove();
     let url_post = `http://localhost:5000/toddy/excluir/${id}`;
-    console.log(url_post)
     $.ajax({
         url: url_post,
         type: 'POST',
         dataType:'json',
         data:{},
         success: function (result, status, xhr){
-           
+            $(this).closest('tr').remove();
             alert("Removido com sucesso;")
 
         },
