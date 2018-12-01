@@ -220,7 +220,7 @@ function buscaTodosExcluir(){
     $.ajax({
         url: url_get,
         type:'GET',
-        success: function(){
+        success: function(result,status,xhr){
             $("#tabela_excuir_todos > tbody").empty();
             $.each(result, function (indice, toddy){
                 let date = new Date(toddy.validade);
